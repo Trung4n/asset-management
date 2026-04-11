@@ -16,19 +16,26 @@ import java.util.UUID;
 @Builder
 @Table(name = "users")
 public class User {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(nullable = false, updatable = false, unique = true)
+    @GeneratedValue
     private UUID id;
 
-    @Email
-    @Column(nullable = false, updatable = false, unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
 
-    @JsonIgnore
-    @Column(nullable = false)
-    private String password_hash;
+    private String passwordHash;
+    private String fullName;
 
-    @Column(nullable = false)
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
+    @ManyToOne
+    @JoinColumn(name = "department_id")
+    private Department department;
+
+    private Boolean isActive;
+
+    private OffsetDateTime createdAt;
+    private OffsetDateTime updatedAt;
 }
