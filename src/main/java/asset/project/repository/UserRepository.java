@@ -1,7 +1,6 @@
 package asset.project.repository;
 
 import asset.project.entity.User;
-import asset.project.entity.UserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +15,9 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     List<User> findByDepartmentId(UUID departmentId);
 
-    List<User> findByRole(UserRole role);
+    List<User> findByRole(User.UserRole role);
 
     boolean existsByEmail(String email);
+
+    User getUserByEmail(String email);
 }
