@@ -145,24 +145,25 @@ As a company staff member, I want to create an account or log in using Google so
 
   
 
-## US-03: Google OAuth Integration
+## US-03: Staff's Account Creation
 
   
 
 | Task ID | Task | Estimate (h) | Role | Status |
 
 |---------|------|--------------|------|--------|
-| US3-T1 | Set up Google OAuth 2.0 credentials | 1.0 | Backend Lead | |
-| US3-T2 | Implement Google OAuth authentication backend | 2.5 | BE | |
-| US3-T3 | Create Google login button UI | 1.0 | FE | |
-| US3-T4 | Implement frontend Google login flow | 1.5 | FE | |
-| US3-T5 | Add user data sync from Google profile | 1.5 | BE | |
-| US3-T6 | Write integration tests for Google login | 1.5 | QA | |
-| US3-T7 | Manual testing and bug fixes | 1.0 | QA | |
+| US3-T1 | Extend database schema for account status (active/locked) | 1.0 | BE | |
+| US3-T2 | Design staff account creation API endpoints | 1.5 | BE | |
+| US3-T3 | Implement role assignment logic in backend | 1.5 | BE | |
+| US3-T4 | Implement account lock/unlock API endpoint | 1.5 | BE | |
+| US3-T5 | Create admin dashboard for staff account management | 2.0 | FE | |
+| US3-T6 | Implement role selection and account status UI controls | 1.5 | FE | |
+| US3-T7 | Write test cases for account creation and lock/unlock | 1.5 | QA | |
+| US3-T8 | Manual testing and bug fixes | 1.0 | QA | |
 
   
 
-**Total Estimated Hours: 10.0h**
+**Total Estimated Hours: 11.5h**
 
   
 
@@ -191,16 +192,9 @@ As a company staff member, I want to create an account or log in using Google so
   
 
 **Total Team Capacity: 415 hours**
-
-  
-
 ---
 
-  
-
 # Risk Identification
-
-  
 
 | Risk | Impact | Probability | Mitigation Plan |
 |------|--------|-------------|-----------------|
