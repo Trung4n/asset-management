@@ -6,57 +6,62 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.UUID;
 
+
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Table(name = "assets")
+@Getter @Setter
 public class Asset {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(nullable = false, updatable = false, unique = true)
+    @GeneratedValue
     private UUID id;
 
-    @Column(name = "asset_code", nullable = false, unique = true, length = 50)
+    @Column(unique = true, nullable = false)
     private String assetCode;
 
-    @Column(nullable = false, length = 200)
     private String name;
-
-    @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column(nullable = false)
-    private String category;
+    @Enumerated(EnumType.STRING)
+    private AssetCategory category;
 
-    @Column(nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private AssetStatus status;
 
-    @Column(name = "purchase_price", precision = 15, scale = 2)
     private BigDecimal purchasePrice;
-
-    @Column(name = "purchase_date")
     private LocalDate purchaseDate;
 
-    @Column(name = "current_department_id")
-    private UUID currentDepartmentId;
+    @ManyToOne
+    @JoinColumn(name = "current_department_id")
+    private Department currentDepartment;
 
-    @Column(name = "created_by")
-    private UUID createdBy;
+    @ManyToOne
+    @JoinColumn(name = "created_by")
+    private User createdBy;
 
-    @Column(name = "archived_at")
     private OffsetDateTime archivedAt;
-
-    @Column(name = "created_at", nullable = false, updatable = false,
-            insertable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT now()")
     private OffsetDateTime createdAt;
-
-    @Column(name = "updated_at", nullable = false,
-            insertable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT now()")
     private OffsetDateTime updatedAt;
+
+    @OneToMany(mappedBy = "asset")
+    private List<AssetAssignment> assignments;
+
+    public enum AssetCategory {
+        ELECTRONICS,
+        FURNITURE,
+        VEHICLE,
+        EQUIPMENT,
+        SOFTWARE,
+        OTHER
+    }
+
+    public enum AssetStatus {
+        ACTIVE,
+        INACTIVE,
+        ARCHIVED,
+        DISPOSED
+    }
 }
