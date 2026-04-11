@@ -1,4 +1,4 @@
-package asset.project;
+package asset.project.dto;
 
 import jakarta.validation.constraints.Size;
 
