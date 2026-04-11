@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Email;
 import lombok.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Entity
@@ -24,7 +25,9 @@ public class User {
     @Column(unique = true, nullable = false)
     private String email;
 
+    @JsonIgnore
     private String passwordHash;
+
     private String fullName;
 
     @Enumerated(EnumType.STRING)
