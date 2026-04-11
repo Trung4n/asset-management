@@ -40,22 +40,15 @@
 |----|-------|----------|----------|--------|
 | 1  | User Account Creation | 1 | 8.0  | In Progress |
 | 2  | System Login with Email/Password | 1 | 5.5  | In Progress |
-| 3  | Google OAuth Integration | 1 | 6.0  | In Progress |
-| 4  | Admin User Account Management | 1 | 7.5  | In Progress |
-| 5  | Role Assignment System | 1 | 5.0  | In Progress |
-| 6  | User Profile Management | 1 | 4.0  | In Progress |
-
-  
+| 3  | Staff's account creation | 1 | 6.0  | In Progress |
 
 ---
 
-  
 
 ### US-01 - User Account Creation
 
 As a system administrator, I want to create user accounts for company staff so that they can access the asset management system.
 
-  
 
 **Acceptance Criteria:**
 
@@ -67,11 +60,7 @@ As a system administrator, I want to create user accounts for company staff so t
 
 - Account is created with default role pending assignment
 
-  
-
 ---
-
-  
 
 ### US-02 - System Login with Email/Password
 
@@ -89,29 +78,17 @@ As a company staff member, I want to log in using my email and password so that 
 
 - Session token is generated and stored securely
 
-  
-
 ---
 
-  
 
-### US-03 - Google OAuth Integration
+### US-03 - Staff's account creation
 
 As a company staff member, I want to create an account or log in using Google so that I can access the system quickly without creating a new password.
 
-  
-
 **Acceptance Criteria:**
 
-- Google login button is visible on login/signup pages
-
-- Users can authenticate via Google account
-
-- System creates user account automatically on first Google login
-
-- User information is synced from Google profile (name, email)
-
-  
+- Admin can create accounts for staffs with a particular role
+- Admin can lock/unlock staff's account
 
 ---
 
@@ -202,9 +179,7 @@ As a company staff member, I want to create an account or log in using Google so
   
 
 | Member | Available Days | Hours/Day | Capacity (hours) |
-
 |--------|----------------|-----------|------------------|
-
 | Scrum Master | 10 | 2 | 20 |
 | Product Owner | 10 | 1.5 | 15 |
 | Backend Developer 1 | 10 | 8 | 80 |
@@ -321,8 +296,6 @@ As a company staff member, I want to create an account or log in using Google so
 - All 3 user stories successfully completed and tested
 
 - Zero critical security vulnerabilities
-
-- System supports at least 500 concurrent users without degradation
 
 - Admin can manage and assign roles to users within the dashboard
 
