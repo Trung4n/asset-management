@@ -12,7 +12,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserLoginRequest {
 
-    String Mail;
+    String mail;
 
     @Size(min = 8, message = "INVALID_PASSWORD")
     String password;

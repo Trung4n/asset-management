@@ -30,7 +30,7 @@ public class UserService {
         if (user == null) {
             return null;
         }
-        if(password.equals(user.getPassword_hash())) {
+        if(password.equals(user.getPasswordHash())) {
             return user;
         }
         return null;
