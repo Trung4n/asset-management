@@ -1,0 +1,2108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AMS — Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* ═══════════════════════════════════════════════════════════
+       RESET & ROOT VARIABLES
+    ══════════════════════════════════════════════════════════════ */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        /* Palette */
+        --navy-950: #06091a;
+        --navy-900: #0b0f2a;
+        --navy-800: #111638;
+        --navy-700: #1a2050;
+        --navy-600: #252d68;
+        --accent: #3b82f6;
+        --accent-lt: #60a5fa;
+        --accent-glow: rgba(59, 130, 246, 0.22);
+        --purple: #7c3aed;
+        --purple-lt: #a78bfa;
+
+        /* Surface */
+        --bg: #f5f6f8;
+        --surface: #ffffff;
+        --surface-hover: #f8f9fc;
+
+        /* Text */
+        --text-primary: #1e2233;
+        --text-secondary: #64748b;
+        --text-muted: #94a3b8;
+        --text-inverted: #e8eaf2;
+        --text-inv-muted: #8892b0;
+
+        /* Status */
+        --green: #22c55e;
+        --green-bg: #dcfce7;
+        --green-text: #15803d;
+        --red: #ef4444;
+        --red-bg: #fee2e2;
+        --red-text: #b91c1c;
+        --orange: #f59e0b;
+        --orange-bg: #fef3c7;
+        --orange-text: #b45309;
+        --blue-bg: #dbeafe;
+        --blue-text: #1d4ed8;
+
+        /* UI */
+        --border: #e9ecf3;
+        --shadow-sm:
+          0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+        --shadow-md:
+          0 4px 16px rgba(0, 0, 0, 0.07), 0 1px 4px rgba(0, 0, 0, 0.04);
+        --shadow-lg:
+          0 8px 32px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.05);
+
+        /* Dimensions */
+        --sidebar-w: 220px;
+        --topbar-h: 62px;
+        --radius-sm: 6px;
+        --radius-md: 10px;
+        --radius-lg: 14px;
+      }
+
+      html,
+      body {
+        height: 100%;
+        font-family: "DM Sans", sans-serif;
+        background: var(--bg);
+        color: var(--text-primary);
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      /* ═══════════════════════════════════════════════════════════
+       LAYOUT SHELL
+    ══════════════════════════════════════════════════════════════ */
+      .shell {
+        display: grid;
+        grid-template-columns: var(--sidebar-w) 1fr;
+        grid-template-rows: var(--topbar-h) 1fr;
+        grid-template-areas:
+          "sidebar topbar"
+          "sidebar main";
+        min-height: 100vh;
+      }
+
+      /* ═══════════════════════════════════════════════════════════
+       SIDEBAR
+    ══════════════════════════════════════════════════════════════ */
+      .sidebar {
+        grid-area: sidebar;
+        background: var(--navy-900);
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: var(--sidebar-w);
+        height: 100vh;
+        z-index: 100;
+        overflow: hidden;
+      }
+
+      /* Subtle gradient mesh inside sidebar */
+      .sidebar::before {
+        content: "";
+        position: absolute;
+        top: -60px;
+        left: -60px;
+        width: 240px;
+        height: 240px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(124, 58, 237, 0.18) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+      .sidebar::after {
+        content: "";
+        position: absolute;
+        bottom: 40px;
+        right: -40px;
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(59, 130, 246, 0.12) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+
+      /* ── Brand ── */
+      .sidebar-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0 20px;
+        height: var(--topbar-h);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        flex-shrink: 0;
+        position: relative;
+        z-index: 1;
+      }
+
+      .brand-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+        background: linear-gradient(135deg, var(--purple), var(--accent));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 18px var(--accent-glow);
+        flex-shrink: 0;
+      }
+
+      .brand-icon svg {
+        width: 17px;
+        height: 17px;
+        stroke: #fff;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .brand-text {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .brand-title {
+        font-family: "Syne", sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--text-inverted);
+        letter-spacing: 0.02em;
+        line-height: 1.1;
+      }
+
+      .brand-sub {
+        font-size: 10px;
+        font-weight: 400;
+        color: var(--text-inv-muted);
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      /* ── Nav label ── */
+      .nav-section-label {
+        padding: 20px 20px 8px;
+        font-size: 9.5px;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--text-inv-muted);
+        position: relative;
+        z-index: 1;
+      }
+
+      /* ── Nav ── */
+      .sidebar-nav {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 0 12px;
+        gap: 2px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border-radius: var(--radius-sm);
+        font-size: 13.5px;
+        font-weight: 500;
+        color: var(--text-inv-muted);
+        cursor: pointer;
+        transition:
+          background 0.18s,
+          color 0.18s;
+        position: relative;
+        user-select: none;
+      }
+
+      .nav-item svg {
+        width: 16px;
+        height: 16px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        flex-shrink: 0;
+        transition: stroke 0.18s;
+      }
+
+      .nav-item:hover {
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--text-inverted);
+      }
+
+      .nav-item.active {
+        background: rgba(59, 130, 246, 0.18);
+        color: var(--accent-lt);
+      }
+
+      /* Active left-bar indicator */
+      .nav-item.active::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 3px;
+        height: 20px;
+        border-radius: 0 3px 3px 0;
+        background: var(--accent);
+      }
+
+      .nav-badge {
+        margin-left: auto;
+        background: var(--red);
+        color: #fff;
+        font-size: 10px;
+        font-weight: 600;
+        padding: 1px 7px;
+        border-radius: 100px;
+        line-height: 1.6;
+      }
+
+      /* ── Sidebar footer ── */
+      .sidebar-footer {
+        padding: 16px 12px;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        position: relative;
+        z-index: 1;
+      }
+
+      .sidebar-user {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 10px;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        transition: background 0.18s;
+      }
+
+      .sidebar-user:hover {
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      .sidebar-avatar-sm {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--purple), var(--accent));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Syne", sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        color: #fff;
+        flex-shrink: 0;
+      }
+
+      .sidebar-user-info {
+        flex: 1;
+        overflow: hidden;
+      }
+
+      .sidebar-user-name {
+        font-size: 12.5px;
+        font-weight: 500;
+        color: var(--text-inverted);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .sidebar-user-role {
+        font-size: 10.5px;
+        color: var(--text-inv-muted);
+      }
+
+      .sidebar-user svg {
+        width: 14px;
+        height: 14px;
+        stroke: var(--text-inv-muted);
+        fill: none;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        flex-shrink: 0;
+      }
+
+      /* ═══════════════════════════════════════════════════════════
+       TOPBAR
+    ══════════════════════════════════════════════════════════════ */
+      .topbar {
+        grid-area: topbar;
+        position: sticky;
+        top: 0;
+        z-index: 90;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        padding: 0 28px;
+        gap: 16px;
+        box-shadow: var(--shadow-sm);
+      }
+
+      /* Mobile menu toggle (CSS-only) */
+      #menu-toggle {
+        display: none;
+      }
+
+      .menu-btn {
+        display: none;
+        width: 34px;
+        height: 34px;
+        border-radius: var(--radius-sm);
+        background: var(--bg);
+        border: 1px solid var(--border);
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+
+      .menu-btn svg {
+        width: 18px;
+        height: 18px;
+        stroke: var(--text-secondary);
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+      }
+
+      .topbar-title {
+        font-family: "Syne", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--text-primary);
+        letter-spacing: -0.01em;
+      }
+
+      .topbar-breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        color: var(--text-muted);
+        margin-top: 1px;
+      }
+
+      .topbar-breadcrumb span {
+        color: var(--accent);
+        font-weight: 500;
+      }
+
+      .topbar-title-wrap {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .topbar-right {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      /* Search */
+      .topbar-search {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 7px 12px;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
+
+      .topbar-search:focus-within {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-glow);
+      }
+
+      .topbar-search svg {
+        width: 14px;
+        height: 14px;
+        stroke: var(--text-muted);
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        flex-shrink: 0;
+      }
+
+      .topbar-search input {
+        border: none;
+        background: none;
+        outline: none;
+        font-family: "DM Sans", sans-serif;
+        font-size: 13px;
+        color: var(--text-primary);
+        width: 160px;
+      }
+
+      .topbar-search input::placeholder {
+        color: var(--text-muted);
+      }
+
+      /* Icon buttons */
+      .icon-btn {
+        position: relative;
+        width: 36px;
+        height: 36px;
+        border-radius: var(--radius-sm);
+        background: var(--bg);
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition:
+          background 0.18s,
+          border-color 0.18s;
+      }
+
+      .icon-btn:hover {
+        background: var(--border);
+      }
+
+      .icon-btn svg {
+        width: 16px;
+        height: 16px;
+        stroke: var(--text-secondary);
+        fill: none;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .icon-btn .dot {
+        position: absolute;
+        top: 7px;
+        right: 7px;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--red);
+        border: 1.5px solid var(--surface);
+      }
+
+      /* User chip */
+      .user-chip {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 5px 12px 5px 5px;
+        border-radius: 100px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        cursor: pointer;
+        transition: background 0.18s;
+      }
+
+      .user-chip:hover {
+        background: var(--border);
+      }
+
+      .user-avatar {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--purple), var(--accent));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Syne", sans-serif;
+        font-size: 10px;
+        font-weight: 700;
+        color: #fff;
+      }
+
+      .user-chip-name {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text-primary);
+      }
+
+      .user-chip svg {
+        width: 13px;
+        height: 13px;
+        stroke: var(--text-muted);
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+      }
+
+      /* ═══════════════════════════════════════════════════════════
+       MAIN CONTENT
+    ══════════════════════════════════════════════════════════════ */
+      .main {
+        grid-area: main;
+        padding: 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        min-height: 0;
+        animation: fadeIn 0.4s ease both;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* ── Section header ── */
+      .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 2px;
+      }
+
+      .section-title {
+        font-family: "Syne", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--text-primary);
+        letter-spacing: -0.01em;
+      }
+
+      .section-action {
+        font-size: 12.5px;
+        font-weight: 500;
+        color: var(--accent);
+        cursor: pointer;
+        transition: color 0.18s;
+      }
+
+      .section-action:hover {
+        color: var(--purple);
+      }
+
+      /* ═══════════════════════════════════════════════════════════
+       SUMMARY CARDS
+    ══════════════════════════════════════════════════════════════ */
+      .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+      }
+
+      .card {
+        background: var(--surface);
+        border-radius: var(--radius-md);
+        padding: 20px;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        position: relative;
+        overflow: hidden;
+        transition:
+          box-shadow 0.22s,
+          transform 0.22s;
+        animation: slideUp 0.5s ease both;
+      }
+
+      .card:nth-child(1) {
+        animation-delay: 0.05s;
+      }
+      .card:nth-child(2) {
+        animation-delay: 0.1s;
+      }
+      .card:nth-child(3) {
+        animation-delay: 0.15s;
+      }
+      .card:nth-child(4) {
+        animation-delay: 0.2s;
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(14px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .card:hover {
+        box-shadow: var(--shadow-md);
+        transform: translateY(-2px);
+      }
+
+      /* Decorative accent bar on top */
+      .card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+      }
+
+      .card-total::before {
+        background: linear-gradient(90deg, var(--accent), var(--purple));
+      }
+      .card-valid::before {
+        background: var(--green);
+      }
+      .card-invalid::before {
+        background: var(--red);
+      }
+      .card-missing::before {
+        background: var(--orange);
+      }
+
+      /* Top row: label + icon */
+      .card-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .card-label {
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--text-secondary);
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+      }
+
+      .card-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .card-icon svg {
+        width: 18px;
+        height: 18px;
+        fill: none;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .icon-blue {
+        background: #dbeafe;
+      }
+      .icon-blue svg {
+        stroke: var(--accent);
+      }
+      .icon-green {
+        background: #dcfce7;
+      }
+      .icon-green svg {
+        stroke: var(--green);
+      }
+      .icon-red {
+        background: #fee2e2;
+      }
+      .icon-red svg {
+        stroke: var(--red);
+      }
+      .icon-orange {
+        background: #fef3c7;
+      }
+      .icon-orange svg {
+        stroke: var(--orange);
+      }
+
+      /* Number */
+      .card-value {
+        font-family: "Syne", sans-serif;
+        font-size: 32px;
+        font-weight: 800;
+        color: var(--text-primary);
+        letter-spacing: -0.03em;
+        line-height: 1;
+      }
+
+      /* Bottom row: trend */
+      .card-footer {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .card-trend {
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+        font-size: 11.5px;
+        font-weight: 600;
+        padding: 2px 7px;
+        border-radius: 100px;
+      }
+
+      .card-trend svg {
+        width: 11px;
+        height: 11px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .trend-up {
+        background: #dcfce7;
+        color: var(--green-text);
+      }
+      .trend-down {
+        background: #fee2e2;
+        color: var(--red-text);
+      }
+      .trend-neu {
+        background: #f1f5f9;
+        color: var(--text-secondary);
+      }
+
+      .card-trend-label {
+        font-size: 11.5px;
+        color: var(--text-muted);
+      }
+
+      /* ═══════════════════════════════════════════════════════════
+       BOTTOM SECTION: Table + Sidebar Widget
+    ══════════════════════════════════════════════════════════════ */
+      .bottom-grid {
+        display: grid;
+        grid-template-columns: 1fr 280px;
+        gap: 16px;
+        align-items: start;
+      }
+
+      /* ── Table card ── */
+      .table-card {
+        background: var(--surface);
+        border-radius: var(--radius-md);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-sm);
+        overflow: hidden;
+        animation: slideUp 0.5s 0.25s ease both;
+      }
+
+      .table-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 20px 14px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .table-card-title {
+        font-family: "Syne", sans-serif;
+        font-size: 13.5px;
+        font-weight: 700;
+        color: var(--text-primary);
+      }
+
+      .table-card-sub {
+        font-size: 12px;
+        color: var(--text-muted);
+        margin-top: 1px;
+      }
+
+      .table-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .btn-sm {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 6px 12px;
+        border-radius: var(--radius-sm);
+        font-family: "DM Sans", sans-serif;
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        transition:
+          background 0.18s,
+          border-color 0.18s;
+        border: 1px solid var(--border);
+        background: var(--bg);
+        color: var(--text-secondary);
+      }
+
+      .btn-sm:hover {
+        background: var(--border);
+      }
+
+      .btn-sm.primary {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #fff;
+        box-shadow: 0 2px 8px var(--accent-glow);
+      }
+
+      .btn-sm.primary:hover {
+        background: #2563eb;
+        border-color: #2563eb;
+      }
+
+      .btn-sm svg {
+        width: 13px;
+        height: 13px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      /* Table */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      thead tr {
+        background: #f8f9fc;
+      }
+
+      thead th {
+        padding: 11px 20px;
+        font-size: 10.5px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        text-align: left;
+        white-space: nowrap;
+      }
+
+      thead th:last-child {
+        text-align: center;
+      }
+
+      tbody tr {
+        border-top: 1px solid var(--border);
+        transition: background 0.15s;
+      }
+
+      tbody tr:hover {
+        background: var(--surface-hover);
+      }
+
+      tbody td {
+        padding: 13px 20px;
+        font-size: 13px;
+        color: var(--text-primary);
+        vertical-align: middle;
+      }
+
+      tbody td:last-child {
+        text-align: center;
+      }
+
+      /* Asset name cell */
+      .asset-name-cell {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .asset-thumb {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .asset-thumb svg {
+        width: 15px;
+        height: 15px;
+        fill: none;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .asset-name {
+        font-weight: 500;
+        font-size: 13px;
+      }
+      .asset-id {
+        font-size: 11px;
+        color: var(--text-muted);
+        margin-top: 1px;
+      }
+
+      /* Type badge */
+      .type-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 3px 9px;
+        border-radius: 100px;
+        font-size: 11.5px;
+        font-weight: 500;
+        background: #f1f5f9;
+        color: var(--text-secondary);
+      }
+
+      /* Status badges */
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 10px;
+        border-radius: 100px;
+        font-size: 11.5px;
+        font-weight: 600;
+      }
+
+      .badge::before {
+        content: "";
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+
+      .badge-valid {
+        background: var(--green-bg);
+        color: var(--green-text);
+      }
+      .badge-valid::before {
+        background: var(--green);
+      }
+      .badge-invalid {
+        background: var(--red-bg);
+        color: var(--red-text);
+      }
+      .badge-invalid::before {
+        background: var(--red);
+      }
+      .badge-missing {
+        background: var(--orange-bg);
+        color: var(--orange-text);
+      }
+      .badge-missing::before {
+        background: var(--orange);
+      }
+      .badge-pending {
+        background: var(--blue-bg);
+        color: var(--blue-text);
+      }
+      .badge-pending::before {
+        background: var(--accent);
+      }
+
+      /* Dept tag */
+      .dept-tag {
+        font-size: 13px;
+        color: var(--text-secondary);
+      }
+
+      /* Table footer */
+      .table-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 20px;
+        border-top: 1px solid var(--border);
+        background: #f8f9fc;
+      }
+
+      .table-count {
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+
+      .pagination {
+        display: flex;
+        gap: 4px;
+      }
+
+      .page-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        font-family: "DM Sans", sans-serif;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--text-secondary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition:
+          background 0.15s,
+          border-color 0.15s;
+      }
+
+      .page-btn:hover {
+        background: var(--bg);
+      }
+      .page-btn.active {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #fff;
+      }
+      .page-btn svg {
+        width: 12px;
+        height: 12px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2.2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      /* ═══════════════════════════════════════════════════════════
+       RIGHT WIDGET COLUMN
+    ══════════════════════════════════════════════════════════════ */
+      .widget-col {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      /* Donut widget */
+      .widget-card {
+        background: var(--surface);
+        border-radius: var(--radius-md);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-sm);
+        padding: 20px;
+        animation: slideUp 0.5s 0.3s ease both;
+      }
+
+      .widget-title {
+        font-family: "Syne", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 16px;
+      }
+
+      /* CSS-only donut chart */
+      .donut-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .donut {
+        position: relative;
+        width: 120px;
+        height: 120px;
+      }
+
+      .donut svg {
+        width: 120px;
+        height: 120px;
+        transform: rotate(-90deg);
+      }
+
+      .donut-center {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .donut-pct {
+        font-family: "Syne", sans-serif;
+        font-size: 22px;
+        font-weight: 800;
+        color: var(--text-primary);
+        line-height: 1;
+      }
+
+      .donut-lbl {
+        font-size: 10px;
+        color: var(--text-muted);
+        margin-top: 1px;
+      }
+
+      .donut-legend {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .legend-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .legend-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+
+      .legend-name {
+        font-size: 12px;
+        color: var(--text-secondary);
+        flex: 1;
+      }
+
+      .legend-val {
+        font-family: "Syne", sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--text-primary);
+      }
+
+      .legend-pct {
+        font-size: 11px;
+        color: var(--text-muted);
+        width: 32px;
+        text-align: right;
+      }
+
+      /* Quick stats widget */
+      .quick-stats {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        animation: slideUp 0.5s 0.35s ease both;
+      }
+
+      .qs-item {
+        background: var(--surface);
+        border-radius: var(--radius-md);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-sm);
+        padding: 14px 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .qs-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .qs-icon svg {
+        width: 16px;
+        height: 16px;
+        fill: none;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .qs-info {
+        flex: 1;
+      }
+
+      .qs-label {
+        font-size: 11px;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        font-weight: 500;
+      }
+
+      .qs-val {
+        font-family: "Syne", sans-serif;
+        font-size: 17px;
+        font-weight: 700;
+        color: var(--text-primary);
+        line-height: 1.2;
+      }
+
+      /* Progress bar */
+      .progress-bar {
+        height: 4px;
+        background: var(--border);
+        border-radius: 100px;
+        overflow: hidden;
+        margin-top: 6px;
+      }
+
+      .progress-fill {
+        height: 100%;
+        border-radius: 100px;
+        background: var(--accent);
+      }
+
+      /* ═══════════════════════════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════════════════════════════ */
+      @media (max-width: 1100px) {
+        .bottom-grid {
+          grid-template-columns: 1fr;
+        }
+        .widget-col {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 16px;
+        }
+        .quick-stats {
+          display: contents;
+        }
+      }
+
+      @media (max-width: 860px) {
+        :root {
+          --sidebar-w: 0px;
+        }
+
+        .shell {
+          grid-template-columns: 1fr;
+          grid-template-rows: var(--topbar-h) 1fr;
+          grid-template-areas:
+            "topbar"
+            "main";
+        }
+
+        .sidebar {
+          transform: translateX(-220px);
+          width: 220px;
+          transition: transform 0.25s ease;
+          box-shadow: var(--shadow-lg);
+        }
+
+        #menu-toggle:checked ~ .shell .sidebar {
+          transform: translateX(0);
+        }
+
+        .menu-btn {
+          display: flex;
+        }
+
+        .topbar-search {
+          display: none;
+        }
+
+        .cards-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 520px) {
+        .cards-grid {
+          grid-template-columns: 1fr;
+        }
+        .main {
+          padding: 16px;
+          gap: 16px;
+        }
+        .bottom-grid {
+          grid-template-columns: 1fr;
+        }
+        .widget-col {
+          display: flex;
+          flex-direction: column;
+        }
+        .topbar {
+          padding: 0 16px;
+        }
+        .table-actions .btn-sm:not(.primary) {
+          display: none;
+        }
+        .user-chip-name {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- CSS-only sidebar toggle (mobile) -->
+    <input type="checkbox" id="menu-toggle" aria-hidden="true" />
+
+    <div class="shell">
+      <!-- ══════════════════════════════════════════════════════
+       SIDEBAR
+  ═══════════════════════════════════════════════════════════ -->
+      <aside class="sidebar">
+        <!-- Brand -->
+        <div class="sidebar-brand">
+          <div class="brand-icon">
+            <svg viewBox="0 0 24 24">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span class="brand-title">AMS</span>
+            <span class="brand-sub">Asset Management</span>
+          </div>
+        </div>
+
+        <!-- Main nav -->
+        <p class="nav-section-label">Main Menu</p>
+
+        <nav class="sidebar-nav" role="navigation" aria-label="Main navigation">
+          <a href="#" class="nav-item active" aria-current="page">
+            <svg viewBox="0 0 24 24">
+              <rect x="3" y="3" width="7" height="7" rx="1" />
+              <rect x="14" y="3" width="7" height="7" rx="1" />
+              <rect x="3" y="14" width="7" height="7" rx="1" />
+              <rect x="14" y="14" width="7" height="7" rx="1" />
+            </svg>
+            Dashboard
+          </a>
+
+          <a href="#" class="nav-item">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+              />
+            </svg>
+            Assets
+            <span class="nav-badge">12</span>
+          </a>
+
+          <a href="#" class="nav-item">
+            <svg viewBox="0 0 24 24">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+              <polyline points="22 4 12 14.01 9 11.01" />
+            </svg>
+            Validation
+          </a>
+
+          <a href="#" class="nav-item">
+            <svg viewBox="0 0 24 24">
+              <line x1="18" y1="20" x2="18" y2="10" />
+              <line x1="12" y1="20" x2="12" y2="4" />
+              <line x1="6" y1="20" x2="6" y2="14" />
+            </svg>
+            Reports
+          </a>
+
+          <a href="#" class="nav-item">
+            <svg viewBox="0 0 24 24">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
+            Users
+          </a>
+
+          <p class="nav-section-label" style="padding-top: 14px">System</p>
+
+          <a href="#" class="nav-item">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="3" />
+              <path
+                d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"
+              />
+            </svg>
+            Settings
+          </a>
+
+          <a href="#" class="nav-item">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+              <line x1="12" y1="17" x2="12.01" y2="17" />
+            </svg>
+            Help & Docs
+          </a>
+        </nav>
+
+        <!-- User footer -->
+        <div class="sidebar-footer">
+          <div class="sidebar-user">
+            <div class="sidebar-avatar-sm">AJ</div>
+            <div class="sidebar-user-info">
+              <p class="sidebar-user-name">Alex Johnson</p>
+              <p class="sidebar-user-role">Administrator</p>
+            </div>
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="1" />
+              <circle cx="12" cy="5" r="1" />
+              <circle cx="12" cy="19" r="1" />
+            </svg>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ══════════════════════════════════════════════════════
+       TOPBAR
+  ═══════════════════════════════════════════════════════════ -->
+      <header class="topbar">
+        <!-- Mobile menu toggle -->
+        <label class="menu-btn" for="menu-toggle" aria-label="Toggle sidebar">
+          <svg viewBox="0 0 24 24">
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <line x1="3" y1="12" x2="21" y2="12" />
+            <line x1="3" y1="18" x2="21" y2="18" />
+          </svg>
+        </label>
+
+        <div class="topbar-title-wrap">
+          <h1 class="topbar-title">Dashboard</h1>
+          <p class="topbar-breadcrumb">AMS &rsaquo; <span>Overview</span></p>
+        </div>
+
+        <div class="topbar-right">
+          <!-- Search -->
+          <div class="topbar-search">
+            <svg viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            <input
+              type="search"
+              placeholder="Search assets…"
+              aria-label="Search assets"
+            />
+          </div>
+
+          <!-- Notification -->
+          <button class="icon-btn" type="button" aria-label="Notifications">
+            <svg viewBox="0 0 24 24">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+            </svg>
+            <span class="dot"></span>
+          </button>
+
+          <!-- Settings shortcut -->
+          <button class="icon-btn" type="button" aria-label="Settings">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="3" />
+              <path
+                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"
+              />
+            </svg>
+          </button>
+
+          <!-- User chip -->
+          <div class="user-chip" role="button" aria-label="User menu">
+            <div class="user-avatar">AJ</div>
+            <span class="user-chip-name">Alex Johnson</span>
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9" /></svg>
+          </div>
+        </div>
+      </header>
+
+      <!-- ══════════════════════════════════════════════════════
+       MAIN CONTENT
+  ═══════════════════════════════════════════════════════════ -->
+      <main class="main">
+        <!-- ── Summary Cards ── -->
+        <section aria-label="Summary statistics">
+          <div class="section-header">
+            <h2 class="section-title">Overview</h2>
+            <span class="section-action">This month ↓</span>
+          </div>
+          <div class="cards-grid">
+            <!-- Total Assets -->
+            <div class="card card-total">
+              <div class="card-top">
+                <span class="card-label">Total Assets</span>
+                <div class="card-icon icon-blue">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+                    />
+                  </svg>
+                </div>
+              </div>
+              <p class="card-value">1,284</p>
+              <div class="card-footer">
+                <span class="card-trend trend-up">
+                  <svg viewBox="0 0 24 24">
+                    <polyline points="18 15 12 9 6 15" />
+                  </svg>
+                  +8.2%
+                </span>
+                <span class="card-trend-label">vs last month</span>
+              </div>
+            </div>
+
+            <!-- Valid Assets -->
+            <div class="card card-valid">
+              <div class="card-top">
+                <span class="card-label">Valid Assets</span>
+                <div class="card-icon icon-green">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                    <polyline points="22 4 12 14.01 9 11.01" />
+                  </svg>
+                </div>
+              </div>
+              <p class="card-value">987</p>
+              <div class="card-footer">
+                <span class="card-trend trend-up">
+                  <svg viewBox="0 0 24 24">
+                    <polyline points="18 15 12 9 6 15" />
+                  </svg>
+                  +3.5%
+                </span>
+                <span class="card-trend-label">76.9% of total</span>
+              </div>
+            </div>
+
+            <!-- Invalid Assets -->
+            <div class="card card-invalid">
+              <div class="card-top">
+                <span class="card-label">Invalid Assets</span>
+                <div class="card-icon icon-red">
+                  <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="15" y1="9" x2="9" y2="15" />
+                    <line x1="9" y1="9" x2="15" y2="15" />
+                  </svg>
+                </div>
+              </div>
+              <p class="card-value">184</p>
+              <div class="card-footer">
+                <span class="card-trend trend-down">
+                  <svg viewBox="0 0 24 24">
+                    <polyline points="18 9 12 15 6 9" />
+                  </svg>
+                  −2.1%
+                </span>
+                <span class="card-trend-label">14.3% of total</span>
+              </div>
+            </div>
+
+            <!-- Missing Assets -->
+            <div class="card card-missing">
+              <div class="card-top">
+                <span class="card-label">Missing Assets</span>
+                <div class="card-icon icon-orange">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
+                    />
+                    <line x1="12" y1="9" x2="12" y2="13" />
+                    <line x1="12" y1="17" x2="12.01" y2="17" />
+                  </svg>
+                </div>
+              </div>
+              <p class="card-value">113</p>
+              <div class="card-footer">
+                <span class="card-trend trend-neu">
+                  <svg viewBox="0 0 24 24">
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                  </svg>
+                  +0.4%
+                </span>
+                <span class="card-trend-label">8.8% of total</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── Bottom: Table + Widgets ── -->
+        <div class="bottom-grid">
+          <!-- Recent Assets Table -->
+          <section class="table-card" aria-label="Recent assets">
+            <div class="table-card-header">
+              <div>
+                <h2 class="table-card-title">Recent Assets</h2>
+                <p class="table-card-sub">Last 10 registered entries</p>
+              </div>
+              <div class="table-actions">
+                <button class="btn-sm" type="button">
+                  <svg viewBox="0 0 24 24">
+                    <line x1="4" y1="6" x2="20" y2="6" />
+                    <line x1="8" y1="12" x2="16" y2="12" />
+                    <line x1="10" y1="18" x2="14" y2="18" />
+                  </svg>
+                  Filter
+                </button>
+                <button class="btn-sm" type="button">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                  </svg>
+                  Export
+                </button>
+                <button class="btn-sm primary" type="button">
+                  <svg viewBox="0 0 24 24">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                  </svg>
+                  Add Asset
+                </button>
+              </div>
+            </div>
+
+            <div style="overflow-x: auto">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Asset Name</th>
+                    <th>Type</th>
+                    <th>Department</th>
+                    <th>Location</th>
+                    <th>Last Checked</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <div class="asset-name-cell">
+                        <div class="asset-thumb icon-blue">
+                          <svg viewBox="0 0 24 24" stroke="var(--accent)">
+                            <rect x="2" y="3" width="20" height="14" rx="2" />
+                            <line x1="8" y1="21" x2="16" y2="21" />
+                            <line x1="12" y1="17" x2="12" y2="21" />
+                          </svg>
+                        </div>
+                        <div>
+                          <p class="asset-name">Dell XPS 15 Laptop</p>
+                          <p class="asset-id">#AST-00142</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td><span class="type-badge">Hardware</span></td>
+                    <td><span class="dept-tag">Engineering</span></td>
+                    <td>Floor 3 — A12</td>
+                    <td>Apr 10, 2026</td>
+                    <td><span class="badge badge-valid">Valid</span></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="asset-name-cell">
+                        <div class="asset-thumb icon-green">
+                          <svg viewBox="0 0 24 24" stroke="var(--green)">
+                            <rect x="5" y="2" width="14" height="20" rx="2" />
+                            <line x1="12" y1="18" x2="12.01" y2="18" />
+                          </svg>
+                        </div>
+                        <div>
+                          <p class="asset-name">iPhone 15 Pro</p>
+                          <p class="asset-id">#AST-00138</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td><span class="type-badge">Mobile</span></td>
+                    <td><span class="dept-tag">Sales</span></td>
+                    <td>Floor 1 — B04</td>
+                    <td>Apr 09, 2026</td>
+                    <td><span class="badge badge-valid">Valid</span></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="asset-name-cell">
+                        <div class="asset-thumb icon-orange">
+                          <svg viewBox="0 0 24 24" stroke="var(--orange)">
+                            <polyline points="6 9 6 2 18 2 18 9" />
+                            <path
+                              d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"
+                            />
+                            <rect x="6" y="14" width="12" height="8" />
+                          </svg>
+                        </div>
+                        <div>
+                          <p class="asset-name">HP LaserJet Pro</p>
+                          <p class="asset-id">#AST-00135</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td><span class="type-badge">Peripheral</span></td>
+                    <td><span class="dept-tag">Finance</span></td>
+                    <td>Floor 2 — C07</td>
+                    <td>Mar 28, 2026</td>
+                    <td><span class="badge badge-missing">Missing</span></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="asset-name-cell">
+                        <div class="asset-thumb icon-red">
+                          <svg viewBox="0 0 24 24" stroke="var(--red)">
+                            <rect x="2" y="3" width="20" height="14" rx="2" />
+                            <line x1="8" y1="21" x2="16" y2="21" />
+                            <line x1="12" y1="17" x2="12" y2="21" />
+                          </svg>
+                        </div>
+                        <div>
+                          <p class="asset-name">MacBook Pro 16"</p>
+                          <p class="asset-id">#AST-00129</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td><span class="type-badge">Hardware</span></td>
+                    <td><span class="dept-tag">Design</span></td>
+                    <td>Floor 4 — D02</td>
+                    <td>Mar 15, 2026</td>
+                    <td><span class="badge badge-invalid">Invalid</span></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="asset-name-cell">
+                        <div class="asset-thumb" style="background: #ede9fe">
+                          <svg
+                            viewBox="0 0 24 24"
+                            stroke="var(--purple)"
+                            fill="none"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          >
+                            <path
+                              d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
+                            />
+                          </svg>
+                        </div>
+                        <div>
+                          <p class="asset-name">Cisco Firewall ASA</p>
+                          <p class="asset-id">#AST-00121</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td><span class="type-badge">Network</span></td>
+                    <td><span class="dept-tag">IT</span></td>
+                    <td>Server Room</td>
+                    <td>Apr 11, 2026</td>
+                    <td><span class="badge badge-valid">Valid</span></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="asset-name-cell">
+                        <div class="asset-thumb icon-blue">
+                          <svg viewBox="0 0 24 24" stroke="var(--accent)">
+                            <rect x="3" y="3" width="18" height="18" rx="2" />
+                            <path d="M3 9h18M9 21V9" />
+                          </svg>
+                        </div>
+                        <div>
+                          <p class="asset-name">LG 27" 4K Monitor</p>
+                          <p class="asset-id">#AST-00119</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td><span class="type-badge">Display</span></td>
+                    <td><span class="dept-tag">Engineering</span></td>
+                    <td>Floor 3 — A08</td>
+                    <td>Apr 07, 2026</td>
+                    <td><span class="badge badge-pending">Pending</span></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="asset-name-cell">
+                        <div class="asset-thumb icon-orange">
+                          <svg viewBox="0 0 24 24" stroke="var(--orange)">
+                            <path
+                              d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+                            />
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                            <line x1="12" y1="22.08" x2="12" y2="12" />
+                          </svg>
+                        </div>
+                        <div>
+                          <p class="asset-name">Projector Epson EB</p>
+                          <p class="asset-id">#AST-00114</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td><span class="type-badge">AV Equipment</span></td>
+                    <td><span class="dept-tag">HR</span></td>
+                    <td>Meeting Room 2B</td>
+                    <td>Feb 22, 2026</td>
+                    <td><span class="badge badge-missing">Missing</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="table-footer">
+              <p class="table-count">Showing 7 of 1,284 assets</p>
+              <nav class="pagination" aria-label="Table pagination">
+                <button
+                  class="page-btn"
+                  type="button"
+                  aria-label="Previous page"
+                >
+                  <svg viewBox="0 0 24 24">
+                    <polyline points="15 18 9 12 15 6" />
+                  </svg>
+                </button>
+                <button
+                  class="page-btn active"
+                  type="button"
+                  aria-current="page"
+                >
+                  1
+                </button>
+                <button class="page-btn" type="button">2</button>
+                <button class="page-btn" type="button">3</button>
+                <button class="page-btn" type="button" aria-label="Next page">
+                  <svg viewBox="0 0 24 24">
+                    <polyline points="9 18 15 12 9 6" />
+                  </svg>
+                </button>
+              </nav>
+            </div>
+          </section>
+
+          <!-- Right widgets -->
+          <div class="widget-col">
+            <!-- Donut widget -->
+            <div class="widget-card">
+              <h3 class="widget-title">Asset Status Breakdown</h3>
+              <div class="donut-wrap">
+                <div class="donut">
+                  <!-- SVG donut using stroke-dasharray trick -->
+                  <svg viewBox="0 0 36 36">
+                    <!-- Background track -->
+                    <circle
+                      cx="18"
+                      cy="18"
+                      r="15.9"
+                      fill="none"
+                      stroke="#e9ecf3"
+                      stroke-width="3"
+                    />
+                    <!-- Valid: 76.9% of 100 = 48.2 of 62.8 (2πr where r≈10) -->
+                    <!-- circumference = 2 * π * 15.9 ≈ 99.9 -->
+                    <circle
+                      cx="18"
+                      cy="18"
+                      r="15.9"
+                      fill="none"
+                      stroke="#22c55e"
+                      stroke-width="3"
+                      stroke-dasharray="76.9 23.1"
+                      stroke-dashoffset="0"
+                    />
+                    <!-- Invalid: 14.3% -->
+                    <circle
+                      cx="18"
+                      cy="18"
+                      r="15.9"
+                      fill="none"
+                      stroke="#ef4444"
+                      stroke-width="3"
+                      stroke-dasharray="14.3 85.7"
+                      stroke-dashoffset="-76.9"
+                    />
+                    <!-- Missing: 8.8% -->
+                    <circle
+                      cx="18"
+                      cy="18"
+                      r="15.9"
+                      fill="none"
+                      stroke="#f59e0b"
+                      stroke-width="3"
+                      stroke-dasharray="8.8 91.2"
+                      stroke-dashoffset="-91.2"
+                    />
+                  </svg>
+                  <div class="donut-center">
+                    <span class="donut-pct">76.9%</span>
+                    <span class="donut-lbl">Valid rate</span>
+                  </div>
+                </div>
+
+                <div class="donut-legend">
+                  <div class="legend-row">
+                    <span
+                      class="legend-dot"
+                      style="background: var(--green)"
+                    ></span>
+                    <span class="legend-name">Valid</span>
+                    <span class="legend-val">987</span>
+                    <span class="legend-pct">76.9%</span>
+                  </div>
+                  <div class="legend-row">
+                    <span
+                      class="legend-dot"
+                      style="background: var(--red)"
+                    ></span>
+                    <span class="legend-name">Invalid</span>
+                    <span class="legend-val">184</span>
+                    <span class="legend-pct">14.3%</span>
+                  </div>
+                  <div class="legend-row">
+                    <span
+                      class="legend-dot"
+                      style="background: var(--orange)"
+                    ></span>
+                    <span class="legend-name">Missing</span>
+                    <span class="legend-val">113</span>
+                    <span class="legend-pct">8.8%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick stats -->
+            <div class="quick-stats">
+              <div class="qs-item">
+                <div class="qs-icon icon-blue">
+                  <svg viewBox="0 0 24 24" stroke="var(--accent)">
+                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                    <line x1="16" y1="2" x2="16" y2="6" />
+                    <line x1="8" y1="2" x2="8" y2="6" />
+                    <line x1="3" y1="10" x2="21" y2="10" />
+                  </svg>
+                </div>
+                <div class="qs-info">
+                  <p class="qs-label">Audits This Month</p>
+                  <p class="qs-val">34</p>
+                  <div class="progress-bar">
+                    <div
+                      class="progress-fill"
+                      style="width: 68%; background: var(--accent)"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="qs-item">
+                <div class="qs-icon icon-green">
+                  <svg viewBox="0 0 24 24" stroke="var(--green)">
+                    <polyline points="20 12 20 22 4 22 4 12" />
+                    <rect x="2" y="7" width="20" height="5" />
+                    <path d="M12 22V7" />
+                    <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z" />
+                    <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" />
+                  </svg>
+                </div>
+                <div class="qs-info">
+                  <p class="qs-label">New Assets Added</p>
+                  <p class="qs-val">58</p>
+                  <div class="progress-bar">
+                    <div
+                      class="progress-fill"
+                      style="width: 45%; background: var(--green)"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="qs-item">
+                <div class="qs-icon icon-red">
+                  <svg viewBox="0 0 24 24" stroke="var(--red)">
+                    <path
+                      d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
+                    />
+                    <line x1="12" y1="9" x2="12" y2="13" />
+                    <line x1="12" y1="17" x2="12.01" y2="17" />
+                  </svg>
+                </div>
+                <div class="qs-info">
+                  <p class="qs-label">Pending Reviews</p>
+                  <p class="qs-val">21</p>
+                  <div class="progress-bar">
+                    <div
+                      class="progress-fill"
+                      style="width: 21%; background: var(--red)"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <!-- end .shell -->
+
+    <script>
+      // Sidebar toggle active state for nav items
+      document.querySelectorAll(".nav-item").forEach(function (item) {
+        item.addEventListener("click", function (e) {
+          if (this.getAttribute("href") === "#") {
+            e.preventDefault();
+            document.querySelectorAll(".nav-item").forEach(function (n) {
+              n.classList.remove("active");
+            });
+            this.classList.add("active");
+          }
+        });
+      });
+
+      // Close sidebar when clicking main on mobile
+      document.querySelector(".main").addEventListener("click", function () {
+        var toggle = document.getElementById("menu-toggle");
+        if (toggle.checked) toggle.checked = false;
+      });
+
+      // Pagination buttons active state
+      document.querySelectorAll(".page-btn").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var siblings =
+            this.closest(".pagination").querySelectorAll(".page-btn");
+          siblings.forEach(function (b) {
+            b.classList.remove("active");
+            b.removeAttribute("aria-current");
+          });
+          if (!this.querySelector("svg")) {
+            this.classList.add("active");
+            this.setAttribute("aria-current", "page");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
