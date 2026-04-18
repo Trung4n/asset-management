@@ -1,216 +1,198 @@
-# TÀI LIỆU THIẾT KẾ BACKEND - BỔ SUNG PHÂN QUYỀN & NGHIỆP VỤ AUDIT
+# Asset Management System - Product Documentation
 
-## Quy ước các Role trong hệ thống
-Hệ thống sử dụng các Role sau cho Spring Security:
-* `ADMIN`: Quản trị viên (Quản lý User, cấu hình hệ thống).
-* `ASSET_MANAGER`: Quản lý tài sản (Thêm, sửa, xóa, luân chuyển).
-* `DEPT_STAFF`: Nhân viên phòng ban (Chỉ xem tài sản của phòng mình, xác nhận kiểm kê).
-* `AUDITOR`: Kiểm toán viên (Tạo đợt kiểm kê, chốt tình trạng tài sản, xem báo cáo).
+## 1. Product Vision
+
+The Asset Management System is designed to help organizations efficiently track, assign, and validate their assets. The system ensures transparency, reduces asset loss, and improves the accuracy of annual audits by providing a centralized platform for asset management.
 
 ---
 
-## 1. Cập nhật Phân Quyền (Roles) cho các Nhóm API Cơ Bản
+## 2. User Roles
 
-### 1.1. Nhóm Authentication & User Management
-* **`POST /api/auth/login`** | Quyền: `[ALL]` (Public, không yêu cầu token)
-* **`GET /api/users/me`** | Quyền: `[ALL]` (Yêu cầu có token hợp lệ)
-* **`POST /api/users`** | Quyền: `[ADMIN]` (Tạo user mới)
-* **`PUT /api/users/{id}/status`** | Quyền: `[ADMIN]` (Khóa/Mở khóa tài khoản)
-
-### 1.2. Nhóm Department
-* **`GET /api/departments`** | Quyền: `[ALL]` (Ai đã login đều được xem để nạp Dropdown)
-
-### 1.3. Nhóm Asset Management
-* **`GET /api/assets`** * Quyền: `[ADMIN, ASSET_MANAGER, AUDITOR]` (Được xem toàn bộ).
-  * Quyền: `[DEPT_STAFF]` (Chỉ được xem tài sản có `departmentId` thuộc về phòng ban của mình - Backend cần tự bắt User hiện tại thuộc phòng nào để filter ngầm).
-* **`POST /api/assets`** | Quyền: `[ASSET_MANAGER]`
-* **`PUT /api/assets/{id}`** | Quyền: `[ASSET_MANAGER]`
-* **`DELETE /api/assets/{id}`** | Quyền: `[ASSET_MANAGER]`
-
-### 1.4. Nhóm Asset Assignment (Luân chuyển)
-* **`POST /api/assets/{id}/transfer`** | Quyền: `[ASSET_MANAGER]`
-* **`GET /api/assets/{id}/history`** | Quyền: `[ADMIN, ASSET_MANAGER, AUDITOR]`
+- Admin
+- Asset Manager
+- Department Staff
+- Auditor
 
 ---
 
-## 2. Chi tiết hóa Nhóm Validation / Audit (Thỏa mãn User Stories)
+## 3. User Stories
 
-Phần này được thiết kế lại để giải quyết 3 User Stories: (1) Staff báo cáo tình trạng, (2) Auditor đánh giá chốt sổ, (3) Auditor xem báo cáo.
+### 3.1 Asset Management
 
-### API 2.5.1. Tạo đợt kiểm kê mới
-* **User Story:** System requirement.
-* **Quyền:** `[AUDITOR]`
-* **Endpoint:** `POST /api/audits`
-* **Input (Request Body):**
-  ```json
-  {
-    "title": "Kiểm kê tài sản Quý 3/2026",
-    "startDate": "2026-07-01",
-    "endDate": "2026-07-15"
-  }
+- As an Asset Manager, I want to create a new asset so that it can be tracked in the system.
+- As an Asset Manager, I want to update asset information so that data remains accurate.
+- As an Asset Manager, I want to archive or delete an asset so that unused assets are removed from active tracking.
+- As an Asset Manager, I want to view all assets so that I can monitor them easily.
 
-  Output: Trả về auditId (UUID).
+### 3.2 Asset Assignment
 
-API 2.5.2. Lấy danh sách tài sản cần kiểm kê trong đợt
-Quyền: [AUDITOR, DEPT_STAFF]
+- As an Asset Manager, I want to assign assets to a department so that ownership is clear.
+- As an Asset Manager, I want to transfer assets between departments so that changes are properly recorded.
+- As a Department Staff, I want to view assets assigned to my department so that I know what we have.
 
-Endpoint: GET /api/audits/{auditId}/assets
+### 3.3 Annual Asset Validation
 
-Logic:
+- As an Auditor, I want to initiate an annual asset validation so that all assets are checked.
+- As a Department Staff, I want to confirm the status of each asset so that validation is accurate.
+- As an Auditor, I want to mark assets as valid, invalid, or missing so that issues are identified.
+- As an Auditor, I want to view validation results so that I can generate reports.
 
-Nếu là AUDITOR: Trả về toàn bộ danh sách kiểm kê của tất cả các phòng.
+### 3.4 Reporting and Tracking
 
-Nếu là DEPT_STAFF: Trả về danh sách tài sản CHỈ thuộc phòng ban của staff đó.
+- As an Admin, I want to view reports of asset status so that I can make informed decisions.
+- As an Admin, I want to view the history of asset changes so that I can audit activities.
 
-Output:
+### 3.5 User Management
 
-JSON
-{
-  "content": [
-    {
-      "assetId": "uuid-asset-1",
-      "assetName": "Laptop Dell",
-      "staffStatus": "PENDING",     // PENDING, VALID, INVALID, MISSING
-      "auditorStatus": "PENDING"
-    }
-  ]
-}
-API 2.5.3. Department Staff xác nhận tình trạng (Gửi báo cáo)
-User Story: As a Department Staff, I want to confirm the status of each asset so that validation is accurate.
+- As an Admin, I want to create and manage user accounts so that system access is controlled.
+- As an Admin, I want to assign roles so that permissions are enforced.
 
-Quyền: [DEPT_STAFF]
+---
 
-Endpoint: PUT /api/audits/{auditId}/assets/{assetId}/staff-confirm
+## 4. Functional Requirements
 
-Input (Request Body):
+### 4.1 Admin
 
-JSON
-{
-  "status": "VALID", // VALID, INVALID, MISSING
-  "note": "Máy vẫn dùng tốt, tuy nhiên sạc hơi lỏng",
-  "imageProofUrl": "https://s3.../image.jpg" // Optional: Nếu staff cần upload ảnh chứng minh
-}
-Output: 200 OK
+- Manage user accounts (create, update, deactivate)
+- Assign user roles
+- View system-wide reports
+- View audit logs
 
-API 2.5.4. Auditor đánh giá/chốt tình trạng tài sản
-User Story: As an Auditor, I want to mark assets as valid, invalid, or missing so that issues are identified.
+### 4.2 Asset Manager
 
-Quyền: [AUDITOR]
+- Create, update, archive, and delete assets
+- View all assets
+- Assign assets to departments
+- Transfer assets between departments
 
-Endpoint: PUT /api/audits/{auditId}/assets/{assetId}/auditor-confirm
+### 4.3 Department Staff
 
-Logic: Auditor đọc báo cáo của Staff, có thể đồng ý hoặc đánh giá lại (ví dụ Staff báo VALID nhưng Auditor kiểm tra thấy MISSING). Quyết định của Auditor là quyết định cuối cùng.
+- View assets assigned to their department
+- Update asset validation status during audit
 
-Input (Request Body):
+### 4.4 Auditor
 
-JSON
-{
-  "finalStatus": "INVALID", // VALID, INVALID, MISSING
-  "auditorNote": "Xác nhận máy bị hỏng màn hình, cần đem đi sửa"
-}
-Output: 200 OK
+- Initiate annual validation process
+- Review and update validation status
+- View validation results
+- Generate reports
 
-API 2.5.5. Xem kết quả đợt kiểm kê (Báo cáo)
-User Story: As an Auditor, I want to view validation results so that I can generate reports.
+---
 
-Quyền: [AUDITOR, ADMIN]
+## 5. Acceptance Criteria (Examples)
 
-Endpoint: GET /api/audits/{auditId}/results
+### Asset Assignment
 
-Output (Response Data): Cấu trúc bao gồm phần tổng hợp KPI và danh sách chi tiết để vẽ Biểu đồ hoặc xuất Excel.
+- Given an asset exists
+- When the Asset Manager assigns it to a department
+- Then the asset must appear in that department’s asset list
 
-JSON
-{
-  "auditSummary": {
-    "totalAssetsChecked": 500,
-    "validCount": 450,
-    "invalidCount": 30,
-    "missingCount": 20
-  },
-  "discrepancies": [
-    {
-       "assetCode": "AST-102",
-       "departmentName": "Sales",
-       "staffReportedStatus": "VALID",
-       "auditorFinalStatus": "MISSING",
-       "note": "Nhân viên báo cáo có, nhưng thực tế kiểm tra không thấy tại văn phòng."
-    }
-  ]
-}
-3. Prototype Cập nhật: Cấu trúc Entity cho Audit
-Để Backend có thể thực hiện được các API Audit trên, cấu trúc Database (Entity) phải hỗ trợ lưu trạng thái riêng biệt giữa Staff báo cáo và Auditor chốt sổ.
+### Asset Validation
 
-Java
-package asset.project.entity;
+- Given a validation process is active
+- When Department Staff updates asset status
+- Then the system must store and reflect the updated status
 
-import jakarta.persistence.*;
-import lombok.*;
-import java.time.LocalDate;
-import java.util.UUID;
+---
 
-// Bảng lưu thông tin Đợt Kiểm kê
-@Entity
-@Table(name = "audits")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-public class Audit {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
-    private String title;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private String status; // ONGOING, COMPLETED
-}
+## 6. Non-Functional Requirements
 
-// Bảng chi tiết kết quả kiểm kê cho từng tài sản trong đợt đó
-@Entity
-@Table(name = "audit_details")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-public class AuditDetail {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+### 6.1 Performance
 
-    @ManyToOne
-    @JoinColumn(name = "audit_id")
-    private Audit audit;
+- Support at least 500 concurrent users
+- API response time:
+  - ≤ 500 ms for 95% of requests
+  - ≤ 1 second for 99% of requests
 
-    @ManyToOne
-    @JoinColumn(name = "asset_id")
-    private Asset asset;
+- Asset list page loads within 2 seconds for up to 10,000 assets
 
-    // Phẩn Staff báo cáo
-    private String staffStatus; // VALID, INVALID, MISSING, PENDING
-    private String staffNote;
-    private String staffImageProof;
+### 6.2 Availability
 
-    // Phần Auditor chốt kết quả
-    private String auditorFinalStatus; // VALID, INVALID, MISSING, PENDING
-    private String auditorNote;
-    
-    // Lưu lại ai đã thao tác để truy vết
-    private UUID staffId;
-    private UUID auditorId;
-}
-4. DTO Prototype cho Audit Controller
-Java
-package asset.project.dto.request;
+- System uptime ≥ 99.5% per month
+- Maintenance downtime ≤ 4 hours per month
 
-import jakarta.validation.constraints.NotBlank;
+### 6.3 Security
 
-public record StaffConfirmReq(
-    @NotBlank String status,
-    String note,
-    String imageProofUrl
-) {}
+- Secure authentication (JWT or equivalent)
+- Password encryption using bcrypt (cost ≥ 10)
+- Role-based access control enforced
+- No critical vulnerabilities in security scans
 
-public record AuditorConfirmReq(
-    @NotBlank String finalStatus,
-    String auditorNote
-) {}
+### 6.4 Reliability
 
-Với bản cập nhật này, luồng đi của tính năng **Kiểm kê thường niên** đã hoàn toàn logic:
-1. `Auditor` tạo đợt kiểm kê. Hệ thống tự động snapshot danh sách các tài sản cần kiểm kê vào bảng `audit_details` (Status mặc định là `PENDING`).
-2. `Dept Staff` đăng nhập, gọi API get list tài sản phòng mình, lặp qua list đó để bắn API `staff-confirm` báo cáo tình trạng từng món.
-3. `Auditor` xem danh sách, đi kiểm tra chéo, và bắn API `auditor-confirm` để chốt trạng thái cuối cùng.
-4. `Auditor` gọi API `results` để lấy data báo cáo, phục vụ việc export báo cáo.
+- No data loss during normal operations
+- Daily backups
+- Recovery time ≤ 2 hours
+- ACID-compliant transactions
+
+### 6.5 Usability
+
+- New users can complete basic tasks within 10 minutes
+- UI response time ≤ 200 ms
+
+### 6.6 Scalability
+
+- Support at least 100,000 assets
+- Query response time ≤ 1 second at this scale
+
+### 6.7 Maintainability
+
+- Modular architecture
+- Unit test coverage ≥ 70%
+- Average bug fix time ≤ 2 days
+
+### 6.8 Logging and Monitoring
+
+- Log all critical actions
+- Log retention ≥ 90 days
+- Error detection within 1 minute
+
+---
+
+## 7. MVP Scope
+
+The initial version of the system will include:
+
+- Asset CRUD operations
+- Asset assignment to departments
+- Basic asset validation process
+
+Excluded from MVP:
+
+- Advanced analytics
+- Complex dashboards
+- AI-based features
+
+---
+
+## 8. Product Backlog
+
+| Feature           | Priority | Description                  |
+| ----------------- | -------- | ---------------------------- |
+| Asset CRUD        | High     | Core asset management        |
+| Asset Assignment  | High     | Assign assets to departments |
+| Asset Validation  | High     | Annual validation process    |
+| User Management   | Medium   | Manage users and roles       |
+| Reporting         | Medium   | View reports and audit logs  |
+| Advanced Features | Low      | Future enhancements          |
+
+---
+
+## 9. Sprint Plan
+
+### Sprint 1
+
+- Asset CRUD
+- Basic UI for asset listing
+
+### Sprint 2
+
+- Asset assignment
+- Department view
+
+### Sprint 3
+
+- Asset validation flow
+- Reporting and user management
+
+---
