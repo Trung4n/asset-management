@@ -12,16 +12,13 @@
 | UC-05 | Create Asset                         | Asset Manager    |
 | UC-06 | Update Asset                         | Asset Manager    |
 | UC-07 | Archive Asset                        | Asset Manager    |
-| UC-08 | Delete Asset                         | Asset Manager    |
 | UC-09 | View All Assets                      | Asset Manager    |
 | UC-10 | Allocate Asset to Department         | Asset Manager    |
 | UC-11 | Transfer Asset Between Departments   | Asset Manager    |
 | UC-12 | View Department Assets               | Department Staff |
 | UC-13 | Update Asset Status During Inventory | Department Staff |
 | UC-14 | Initiate Annual Inventory Process    | Auditor          |
-| UC-15 | Review and Update Inventory Status   | Auditor          |
 | UC-16 | View Inventory Results               | Auditor          |
-| UC-17 | Generate Report                      | Auditor          |
 
 ---
 
@@ -190,30 +187,6 @@
 
 ---
 
-### UC-08 – Delete Asset
-
-| Field            | Detail                                                             |
-| ---------------- | ------------------------------------------------------------------ |
-| **Actor**        | Asset Manager                                                      |
-| **Description**  | Asset Manager permanently removes an asset record from the system. |
-| **Precondition** | Asset Manager is authenticated. Asset is archived or unallocated.  |
-| **Trigger**      | Asset record is confirmed redundant or entered in error.           |
-
-**Main Flow:**
-
-1. Asset Manager locates the asset (typically from the archived list).
-2. Asset Manager selects "Delete Asset."
-3. System displays a permanent deletion warning and requests confirmation.
-4. Asset Manager confirms deletion.
-5. System permanently removes the asset record.
-6. System logs the deletion in the audit trail.
-
-**Postcondition:** Asset record is permanently removed from the system.
-
-**Exception:** If the asset is still allocated to a department, the system blocks deletion and prompts deallocation first.
-
----
-
 ### UC-09 – View All Assets
 
 | Field            | Detail                                                                  |
@@ -355,31 +328,6 @@
 **Postcondition:** Inventory cycle is active and department tasks are assigned.
 
 **Exception:** If a cycle is already in progress, the system prevents starting a new one until the existing cycle is closed.
-
----
-
-### UC-15 – Review and Update Inventory Status
-
-| Field            | Detail                                                                                      |
-| ---------------- | ------------------------------------------------------------------------------------------- |
-| **Actor**        | Auditor                                                                                     |
-| **Description**  | Auditor reviews the inventory submissions from departments and updates the official status. |
-| **Precondition** | Inventory cycle is active. At least one department has submitted updates.                   |
-| **Trigger**      | Department Staff have submitted their asset verifications for review.                       |
-
-**Main Flow:**
-
-1. Auditor opens the active inventory cycle.
-2. Auditor views the list of departments and their submission status.
-3. Auditor selects a department to review its asset status updates.
-4. Auditor examines each asset's reported status and remarks.
-5. Auditor approves, flags, or overrides individual asset statuses.
-6. System records the auditor's review actions and timestamps.
-7. Auditor repeats for all departments.
-
-**Postcondition:** Inventory statuses are reviewed and officially recorded by the auditor.
-
-**Exception:** If a department has not submitted their inventory, the auditor can send a reminder or mark it as non-compliant.
 
 ---
 
