@@ -1,4 +1,4 @@
-# 🗓 Sprint Planning - Sprint 1
+# Sprint Planning - Sprint 1
 
   
 
@@ -8,7 +8,7 @@
 
 **Sprint Duration: 4 hours**  
 
-**Date: [8h] - [12h]**  
+**Time: [8h] - [12h]**  
 
 **Scrum Master: Lu Quoc Phap**  
 
@@ -113,7 +113,7 @@ As a company staff member, I want to create an account or log in using Google so
 
   
 
-**Total Estimated Hours: 9.5h**
+**Total Estimated Hours: 1h**
 
   
 
@@ -137,7 +137,7 @@ As a company staff member, I want to create an account or log in using Google so
 
   
 
-**Total Estimated Hours: 10.0h**
+**Total Estimated Hours: 2h**
 
   
 
@@ -163,7 +163,7 @@ As a company staff member, I want to create an account or log in using Google so
 
   
 
-**Total Estimated Hours: 11.5h**
+**Total Estimated Hours: 1h**
 
   
 
