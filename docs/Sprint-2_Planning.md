@@ -333,10 +333,7 @@ As an Auditor, I want to review and finalize the asset status after validating s
 
 - [ ] Manual testing completed by QA
 
-- [ ] Documentation updated (API docs, setup instructions)
-
-- [ ] Code deployed successfully to staging environment
-  
+- [ ] Documentation updated (API docs, setup instructions)  
 
 ---
 

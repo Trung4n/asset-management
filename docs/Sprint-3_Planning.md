@@ -45,3 +45,14 @@
 | Service downtime during deployment | User impact | Low | Deploy during off-peak hours, use blue-green deployment |
 
 ---
+
+# Definition of Done (DoD)
+
+- [ ] Frontend deployed to Vercel
+- [ ] Backend deployed to Render
+- [ ] Manual testing completed
+- [ ] All bugs fixed and verified
+- [ ] Deployment verified in production
+- [ ] No critical or high-priority bugs remain
+
+---
