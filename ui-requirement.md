@@ -1,3 +1,143 @@
+# Yêu Cầu Giao Diện Người Dùng - Hệ Thống Quản Lý Tài Sản
+
+## 1. Tổng Quan
+
+Tài liệu này định nghĩa các yêu cầu giao diện người dùng (UI) cho Hệ Thống Quản Lý Tài Sản. Nó tập trung vào những gì người dùng nên thấy và cách họ tương tác với hệ thống. Chi tiết triển khai (mã, định kiểu) được xử lý bởi nhóm phát triển frontend.
+
+---
+
+## 2. Nguyên Tắc Giao Diện Chung
+
+- Giao diện phải đơn giản và trực quan
+- Tất cả các hành động chính phải có thể truy cập trong vòng 3 lần nhấp chuột
+- Bố cục nhất quán trên tất cả các trang
+- Thiết kế đáp ứng (ưu tiên cho máy tính để bàn, nhưng có thể thích ứng)
+- Phản hồi rõ ràng cho hành động của người dùng (thành công, lỗi, đang tải)
+
+---
+
+## 3. Các Màn Hình Chính Và Yêu Cầu
+
+### 3.1 Trang Đăng Nhập
+
+**Mục Đích:** Cho phép người dùng xác thực vào hệ thống
+
+**Các Phần Tử Giao Diện:**
+- Nhập: Email / Tên Người Dùng
+- Nhập: Mật Khẩu
+- Nút: Đăng Nhập
+- Hiển Thị Thông Báo Lỗi
+
+**Hành Vi:**
+- Hiển thị lỗi nếu thông tin đăng nhập không hợp lệ
+- Chuyển hướng đến bảng điều khiển sau khi đăng nhập thành công
+
+---
+
+### 3.2 Bảng Điều Khiển (Dashboard)
+
+**Mục Đích:** Cung cấp tổng quan về hệ thống
+
+**Các Phần Tử Giao Diện:**
+- Thẻ tóm tắt:
+  - Tổng số tài sản
+  - Tài sản theo trạng thái (hợp lệ, không hợp lệ, mất tích)
+- Menu điều hướng (thanh bên hoặc thanh trên cùng)
+
+**Hành Vi:**
+- Dữ liệu tải trong vòng 2 giây
+- Nhấp vào tóm tắt để điều hướng đến chế độ xem chi tiết
+
+---
+
+### 3.3 Trang Danh Sách Tài Sản
+
+**Mục Đích:** Cho phép người dùng xem và quản lý tài sản
+
+**Các Phần Tử Giao Diện:**
+- Bảng tài sản (Tên, Loại, Phòng Ban, Trạng Thái, Hành Động)
+- Nút: Tạo Tài Sản
+- Bộ Lọc (Theo phòng ban, Theo trạng thái)
+- Thanh Tìm Kiếm
+
+**Hành Vi:**
+- Nhấp vào hàng để mở chi tiết tài sản
+- Bộ lọc cập nhật danh sách động
+- Phân trang cho bộ dữ liệu lớn
+
+---
+
+### 3.4 Trang Chi Tiết Tài Sản
+
+**Mục Đích:** Hiển thị thông tin chi tiết về tài sản cụ thể
+
+**Các Phần Tử Giao Diện:**
+- Thông tin tài sản, Nút: Chỉnh Sửa, Nút: Chuyển
+- Phần Lịch Sử (thay đổi, gán)
+
+**Hành Vi:**
+- Chỉnh sửa mở biểu mẫu với dữ liệu được điền sẵn
+- Lịch sử được hiển thị theo thứ tự thời gian
+
+---
+
+### 3.5 Biểu Mẫu Tạo / Chỉnh Sửa Tài Sản
+
+**Mục Đích:** Cho phép Quản Lý Tài Sản tạo hoặc cập nhật tài sản
+
+**Các Phần Tử Giao Diện:**
+- Trường Nhập (Tên, Loại, Giá Trị, Ngày Mua)
+- Thả Xuống: Phòng Ban, Trạng Thái
+- Nút: Lưu, Hủy
+
+**Hành Vi:**
+- Xác thực các trường bắt buộc trước khi gửi
+- Hiển thị thông báo thành công hoặc lỗi
+
+---
+
+### 3.6 Gán / Chuyển Tài Sản
+
+**Mục Đích:** Gán hoặc chuyển tài sản giữa các phòng ban
+
+**Các Phần Tử Giao Diện:**
+- Thả Xuống: Chọn Phòng Ban
+- Nút: Xác Nhận Chuyển
+
+**Hành Vi:**
+- Cập nhật phòng ban của tài sản ngay sau khi xác nhận
+- Ghi lại thay đổi trong lịch sử
+
+---
+
+### 3.7 Trang Xác Thực (Kiểm Kê Hằng Năm)
+
+**Mục Đích:** Hỗ trợ quy trình xác thực tài sản
+
+**Các Phần Tử Giao Diện:**
+- Danh sách tài sản được gán cho phòng ban
+- Bộ Chọn Trạng Thái (Hợp Lệ, Không Hợp Lệ, Mất Tích)
+- Nút: Gửi Xác Thực
+
+**Hành Vi:**
+- Người dùng có thể cập nhật trạng thái cho mỗi tài sản
+- Gửi sẽ lưu tất cả các thay đổi
+
+---
+
+### 3.8 Trang Báo Cáo
+
+**Mục Đích:** Cho phép Admin và Kiểm Toán Viên xem báo cáo
+
+**Các Phần Tử Giao Diện:**
+- Bộ Lọc (Khoảng Ngày, Phòng Ban)
+- Biểu Đồ hoặc Bảng Hiển Thị (Phân bố trạng thái tài sản, Kết quả xác thực)
+
+**Hành Vi:**
+- Báo cáo cập nhật dựa trên các bộ lọc được chọn
+
+---
+
 # Asset Management System - UI Requirements
 
 ## 1. Overview
@@ -265,3 +405,7 @@ Manage system users
 - Navigation must be consistent across pages
 
 ---
+
+## 8. Template
+
+Figma: https://www.figma.com/design/3tYkkuslqHo2lkQFO8GzPJ/Vision-UI-Dashboard-React---MUI-Dashboard--Free-Version---Community-
