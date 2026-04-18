@@ -1,4 +1,4 @@
-# 🗓 Sprint Planning - Sprint 2
+# Sprint Planning - Sprint 2
 
   
 
@@ -99,7 +99,7 @@ As a Department Staff, I want to view assets assigned to my department so that I
 
   
 
-**Total Estimated Hours: 7.5h**
+**Total Estimated Hours: 1.5h**
 
   
 
@@ -124,7 +124,7 @@ As a Department Staff, I want to view assets assigned to my department so that I
 
   
 
-**Total Estimated Hours: 7.5h**
+**Total Estimated Hours: 1.5h**
 
   
 
@@ -149,7 +149,7 @@ As a Department Staff, I want to view assets assigned to my department so that I
 
   
 
-**Total Estimated Hours: 7.0h**
+**Total Estimated Hours: 1h**
 
   
 
