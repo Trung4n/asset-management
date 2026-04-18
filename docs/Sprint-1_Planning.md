@@ -230,9 +230,6 @@ As a company staff member, I want to create an account or log in using Google so
 - [ ] Documentation updated (API docs, setup instructions)
 
 - [ ] Code deployed successfully to staging environment
-
-- [ ] Performance benchmarks met (API response ≤500ms)
-
   
 
 ---
