@@ -8,7 +8,6 @@
 | ----- | ------------------------------------ | ---------------- |
 | UC-01 | Manage User Accounts                 | Administrator    |
 | UC-02 | Assign User Roles                    | Administrator    |
-| UC-03 | View System-Wide Reports             | Administrator    |
 | UC-04 | View Audit Logs                      | Administrator    |
 | UC-05 | Create Asset                         | Asset Manager    |
 | UC-06 | Update Asset                         | Asset Manager    |
@@ -91,29 +90,6 @@
 **Postcondition:** User's role and access rights are updated.
 
 **Exception:** If an invalid role is selected, the system prevents the assignment and shows an error.
-
----
-
-### UC-03 – View System-Wide Reports
-
-| Field            | Detail                                                                                    |
-| ---------------- | ----------------------------------------------------------------------------------------- |
-| **Actor**        | Administrator                                                                             |
-| **Description**  | Administrator views aggregated reports covering all assets, users, and system activities. |
-| **Precondition** | Administrator is authenticated.                                                           |
-| **Trigger**      | Administrator needs an overview of system performance or asset status.                    |
-
-**Main Flow:**
-
-1. Administrator navigates to the Reports section.
-2. Administrator selects report type (e.g., asset summary, user activity, department allocation).
-3. Administrator applies filters (date range, department, status).
-4. System retrieves and displays the report data.
-5. Administrator reviews the report on screen or exports it.
-
-**Postcondition:** Report is displayed and optionally exported.
-
-**Exception:** If no data is found for the applied filters, the system displays an empty result message.
 
 ---
 

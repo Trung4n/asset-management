@@ -1,3 +1,5 @@
+Phiên bản Tiếng Việt
+
 # Yêu Cầu Giao Diện Người Dùng - Hệ Thống Quản Lý Tài Sản
 
 ## 1. Tổng Quan
@@ -23,12 +25,14 @@ Tài liệu này định nghĩa các yêu cầu giao diện người dùng (UI) 
 **Mục Đích:** Cho phép người dùng xác thực vào hệ thống
 
 **Các Phần Tử Giao Diện:**
+
 - Nhập: Email / Tên Người Dùng
 - Nhập: Mật Khẩu
 - Nút: Đăng Nhập
 - Hiển Thị Thông Báo Lỗi
 
 **Hành Vi:**
+
 - Hiển thị lỗi nếu thông tin đăng nhập không hợp lệ
 - Chuyển hướng đến bảng điều khiển sau khi đăng nhập thành công
 
@@ -39,12 +43,14 @@ Tài liệu này định nghĩa các yêu cầu giao diện người dùng (UI) 
 **Mục Đích:** Cung cấp tổng quan về hệ thống
 
 **Các Phần Tử Giao Diện:**
+
 - Thẻ tóm tắt:
   - Tổng số tài sản
   - Tài sản theo trạng thái (hợp lệ, không hợp lệ, mất tích)
 - Menu điều hướng (thanh bên hoặc thanh trên cùng)
 
 **Hành Vi:**
+
 - Dữ liệu tải trong vòng 2 giây
 - Nhấp vào tóm tắt để điều hướng đến chế độ xem chi tiết
 
@@ -55,12 +61,14 @@ Tài liệu này định nghĩa các yêu cầu giao diện người dùng (UI) 
 **Mục Đích:** Cho phép người dùng xem và quản lý tài sản
 
 **Các Phần Tử Giao Diện:**
+
 - Bảng tài sản (Tên, Loại, Phòng Ban, Trạng Thái, Hành Động)
 - Nút: Tạo Tài Sản
 - Bộ Lọc (Theo phòng ban, Theo trạng thái)
 - Thanh Tìm Kiếm
 
 **Hành Vi:**
+
 - Nhấp vào hàng để mở chi tiết tài sản
 - Bộ lọc cập nhật danh sách động
 - Phân trang cho bộ dữ liệu lớn
@@ -72,10 +80,12 @@ Tài liệu này định nghĩa các yêu cầu giao diện người dùng (UI) 
 **Mục Đích:** Hiển thị thông tin chi tiết về tài sản cụ thể
 
 **Các Phần Tử Giao Diện:**
+
 - Thông tin tài sản, Nút: Chỉnh Sửa, Nút: Chuyển
 - Phần Lịch Sử (thay đổi, gán)
 
 **Hành Vi:**
+
 - Chỉnh sửa mở biểu mẫu với dữ liệu được điền sẵn
 - Lịch sử được hiển thị theo thứ tự thời gian
 
@@ -86,11 +96,13 @@ Tài liệu này định nghĩa các yêu cầu giao diện người dùng (UI) 
 **Mục Đích:** Cho phép Quản Lý Tài Sản tạo hoặc cập nhật tài sản
 
 **Các Phần Tử Giao Diện:**
+
 - Trường Nhập (Tên, Loại, Giá Trị, Ngày Mua)
 - Thả Xuống: Phòng Ban, Trạng Thái
 - Nút: Lưu, Hủy
 
 **Hành Vi:**
+
 - Xác thực các trường bắt buộc trước khi gửi
 - Hiển thị thông báo thành công hoặc lỗi
 
@@ -101,10 +113,12 @@ Tài liệu này định nghĩa các yêu cầu giao diện người dùng (UI) 
 **Mục Đích:** Gán hoặc chuyển tài sản giữa các phòng ban
 
 **Các Phần Tử Giao Diện:**
+
 - Thả Xuống: Chọn Phòng Ban
 - Nút: Xác Nhận Chuyển
 
 **Hành Vi:**
+
 - Cập nhật phòng ban của tài sản ngay sau khi xác nhận
 - Ghi lại thay đổi trong lịch sử
 
@@ -115,11 +129,13 @@ Tài liệu này định nghĩa các yêu cầu giao diện người dùng (UI) 
 **Mục Đích:** Hỗ trợ quy trình xác thực tài sản
 
 **Các Phần Tử Giao Diện:**
+
 - Danh sách tài sản được gán cho phòng ban
 - Bộ Chọn Trạng Thái (Hợp Lệ, Không Hợp Lệ, Mất Tích)
 - Nút: Gửi Xác Thực
 
 **Hành Vi:**
+
 - Người dùng có thể cập nhật trạng thái cho mỗi tài sản
 - Gửi sẽ lưu tất cả các thay đổi
 
@@ -130,13 +146,17 @@ Tài liệu này định nghĩa các yêu cầu giao diện người dùng (UI) 
 **Mục Đích:** Cho phép Admin và Kiểm Toán Viên xem báo cáo
 
 **Các Phần Tử Giao Diện:**
+
 - Bộ Lọc (Khoảng Ngày, Phòng Ban)
 - Biểu Đồ hoặc Bảng Hiển Thị (Phân bố trạng thái tài sản, Kết quả xác thực)
 
 **Hành Vi:**
+
 - Báo cáo cập nhật dựa trên các bộ lọc được chọn
 
 ---
+
+# English version
 
 # Asset Management System - UI Requirements
 

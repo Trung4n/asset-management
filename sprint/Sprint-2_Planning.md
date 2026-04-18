@@ -1,4 +1,14 @@
-# K\u1ebf Ho\u1ea1ch Sprint - Sprint 2\n\n**D\u1ef1 \u00c1n:** H\u1ec7 Th\u1ed1ng Qu\u1ea3n L\u00fd T\u00e0i S\u1ea3n\n\n**Sprint:** 2\n\n**Th\u1ời L\u01b0\u1ee3ng Sprint:** 4 gi\u1edd\n\n## **Ng\u00e0y: 13h - 16h**\n\n# M\u1ee5c \u0110\u00edch Sprint\n\n> Sprint 2 nh\u1eb1m tri\u1ec3n khai t\u00ednh n\u0103ng Ph\u00e2n B\u1ed5 T\u00e0i S\u1ea3n cho ph\u00e9p Qu\u1ea3n L\u00fd T\u00e0i S\u1ea3n g\u00e1n t\u00e0i s\u1ea3n cho c\u00e1c ph\u00f2ng ban, chuy\u1ec3n t\u00e0i s\u1ea3n gi\u1eefa c\u00e1c ph\u00f2ng ban, v\u00e0 cho ph\u00e9p Nh\u00e2n Vi\u00ean Ph\u00f2ng Ban xem t\u00e0i s\u1ea3n \u0111\u01b0\u1ee3c g\u00e1n cho ph\u00f2ng ban c\u1ee7a h\u1ecd. Giai \u0111o\u1ea1n n\u00e0y tập trung v\u00e0o thi\u1ebft l\u1eadp th\u00e9o d\u00f5i quy\u1ec1n s\u1edf h\u1eefu t\u00e0i s\u1ea3n v\u00e0 th\u00e2y r\u00f5 t\u00e0i s\u1ea3n c\u1ee7a ph\u00f2ng ban.\n\n---\n\n# Sprint Planning - Sprint 2\n\n**Project: Asset Management System**\n\n**Sprint: 2**\n\n**Sprint Duration: 4 hours**\n\n## **Date: 13h - 16h**\n\n# Sprint Goal"
+# Sprint Planning - Sprint 2
+
+**Project: Asset Management System**
+
+**Sprint: 2**
+
+**Sprint Duration: 4 hours**
+
+## **Date: 13h - 16h**
+
+# Sprint Goal
 
 > Sprint 2 aims to implement the Asset Assignment feature that enables Asset Managers to assign assets to departments, transfer assets between departments, and allows Department Staff to view assets assigned to their department. This sprint focuses on establishing asset ownership tracking and departmental asset visibility.
 
