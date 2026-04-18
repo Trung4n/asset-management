@@ -8,6 +8,6 @@ Backend: https://github.com/nguyen2966/CNPMNC_AXON_BE
 
 # Deployment
 
-Frontend: https://cnpmnc-axon-be.onrender.com
+Frontend: https://cnpmnc-axon-fe.vercel.app/dashboard
 
-Backend API: https://cnpmnc-axon-fe.vercel.app/dashboard
+Backend API: https://cnpmnc-axon-be.onrender.com
