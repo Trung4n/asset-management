@@ -1,3 +1,88 @@
+Phiên bản Tiếng Việt
+
+# Yêu Cầu Chức Năng
+
+### 4.1 Quản trị viên
+
+- Quản lý tài khoản người dùng (tạo, cập nhật, vô hiệu hóa)
+- Phân quyền người dùng
+- Xem báo cáo toàn hệ thống
+- Xem nhật ký kiểm tra
+
+### 4.2 Quản lý tài sản
+
+- Tạo, cập nhật, lưu trữ và xóa tài sản
+- Xem toàn bộ tài sản
+- Phân bổ tài sản cho phòng ban
+- Chuyển tài sản giữa các phòng ban
+
+### 4.3 Nhân viên phòng ban
+
+- Xem tài sản được phân bổ cho phòng ban của mình
+- Cập nhật trạng thái tài sản trong đợt kiểm kê
+
+### 4.4 Kiểm toán viên
+
+- Khởi tạo quy trình kiểm kê hằng năm
+- Xem xét và cập nhật trạng thái kiểm kê
+- Xem kết quả kiểm kê
+- Tạo báo cáo
+
+---
+
+# Yêu Cầu Phi Chức Năng
+
+### 6.1 Hiệu Năng
+
+- Hỗ trợ ít nhất 500 người dùng đồng thời
+
+- Thời gian phản hồi API:
+  - ≤ 500 ms với 95% yêu cầu
+  - ≤ 1 giây với 99% yêu cầu
+
+- Trang danh sách tài sản tải trong vòng 2 giây với tối đa 10.000 tài sản
+
+### 6.2 Tính Sẵn Sàng
+
+- Thời gian hoạt động hệ thống ≥ 99.5% mỗi tháng
+- Thời gian bảo trì ≤ 4 giờ mỗi tháng
+
+### 6.3 Bảo Mật
+
+- Xác thực an toàn (JWT hoặc tương đương)
+- Mã hóa mật khẩu bằng bcrypt (cost ≥ 10)
+- Thực thi phân quyền theo vai trò
+- Không có lỗ hổng nghiêm trọng trong quá trình quét bảo mật
+
+### 6.4 Độ Tin Cậy
+
+- Không mất dữ liệu trong vận hành bình thường
+- Sao lưu hằng ngày
+- Thời gian khôi phục ≤ 2 giờ
+- Giao dịch tuân thủ ACID
+
+### 6.5 Khả Năng Sử Dụng
+
+- Người dùng mới hoàn thành tác vụ cơ bản trong 10 phút
+- Thời gian phản hồi giao diện ≤ 200 ms
+
+### 6.6 Khả Năng Mở Rộng
+
+- Hỗ trợ ít nhất 100.000 tài sản
+- Thời gian truy vấn ≤ 1 giây ở quy mô này
+
+### 6.7 Khả Năng Bảo Trì
+
+- Kiến trúc module hóa
+- Độ bao phủ Unit Test ≥ 70%
+- Thời gian sửa lỗi trung bình ≤ 2 ngày
+
+### 6.8 Ghi Log Và Giám Sát
+
+- Ghi log toàn bộ hành động quan trọng
+- Lưu log tối thiểu 90 ngày
+- Phát hiện lỗi trong vòng 1 phút
+
 English version
 
 # Functional Requirements
@@ -84,88 +169,3 @@ English version
 - Error detection within 1 minute
 
 ---
-
-Phiên bản Tiếng Việt
-
-# Yêu Cầu Chức Năng
-
-### 4.1 Quản trị viên
-
-- Quản lý tài khoản người dùng (tạo, cập nhật, vô hiệu hóa)
-- Phân quyền người dùng
-- Xem báo cáo toàn hệ thống
-- Xem nhật ký kiểm tra
-
-### 4.2 Quản lý tài sản
-
-- Tạo, cập nhật, lưu trữ và xóa tài sản
-- Xem toàn bộ tài sản
-- Phân bổ tài sản cho phòng ban
-- Chuyển tài sản giữa các phòng ban
-
-### 4.3 Nhân viên phòng ban
-
-- Xem tài sản được phân bổ cho phòng ban của mình
-- Cập nhật trạng thái tài sản trong đợt kiểm kê
-
-### 4.4 Kiểm toán viên
-
-- Khởi tạo quy trình kiểm kê hằng năm
-- Xem xét và cập nhật trạng thái kiểm kê
-- Xem kết quả kiểm kê
-- Tạo báo cáo
-
----
-
-# Yêu Cầu Phi Chức Năng
-
-### 6.1 Hiệu Năng
-
-- Hỗ trợ ít nhất 500 người dùng đồng thời
-
-- Thời gian phản hồi API:
-  - ≤ 500 ms với 95% yêu cầu
-  - ≤ 1 giây với 99% yêu cầu
-
-- Trang danh sách tài sản tải trong vòng 2 giây với tối đa 10.000 tài sản
-
-### 6.2 Tính Sẵn Sàng
-
-- Thời gian hoạt động hệ thống ≥ 99.5% mỗi tháng
-- Thời gian bảo trì ≤ 4 giờ mỗi tháng
-
-### 6.3 Bảo Mật
-
-- Xác thực an toàn (JWT hoặc tương đương)
-- Mã hóa mật khẩu bằng bcrypt (cost ≥ 10)
-- Thực thi phân quyền theo vai trò
-- Không có lỗ hổng nghiêm trọng trong quá trình quét bảo mật
-
-### 6.4 Độ Tin Cậy
-
-- Không mất dữ liệu trong vận hành bình thường
-- Sao lưu hằng ngày
-- Thời gian khôi phục ≤ 2 giờ
-- Giao dịch tuân thủ ACID
-
-### 6.5 Khả Năng Sử Dụng
-
-- Người dùng mới hoàn thành tác vụ cơ bản trong 10 phút
-- Thời gian phản hồi giao diện ≤ 200 ms
-
-### 6.6 Khả Năng Mở Rộng
-
-- Hỗ trợ ít nhất 100.000 tài sản
-- Thời gian truy vấn ≤ 1 giây ở quy mô này
-
-### 6.7 Khả Năng Bảo Trì
-
-- Kiến trúc module hóa
-- Độ bao phủ Unit Test ≥ 70%
-- Thời gian sửa lỗi trung bình ≤ 2 ngày
-
-### 6.8 Ghi Log Và Giám Sát
-
-- Ghi log toàn bộ hành động quan trọng
-- Lưu log tối thiểu 90 ngày
-- Phát hiện lỗi trong vòng 1 phút
