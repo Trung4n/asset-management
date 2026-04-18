@@ -31,7 +31,8 @@
 | Deploy Frontend to Vercel | Frontend Team |
 | Deploy Backend to Render | Backend Team |
 | Manual Testing | QA Team |
-| Fix Bugs | Development Team |
+| Fix Featrue: create Users | Development Team |
+| Fix Feature: switch deparment's users | Development Team |
 
 ---
 
