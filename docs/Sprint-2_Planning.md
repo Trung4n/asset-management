@@ -33,6 +33,10 @@
 | 1  | Asset Assignment to Department | 1 | 6.0  | Not Started |
 | 2  | Asset Transfer Between Departments | 1 | 5.0  | Not Started |
 | 3  | Department Staff Asset View | 1 | 4.5  | Not Started |
+| 4  | Create Audit Inspection Cycle | 1 | 4.0  | Not Started |
+| 5  | Staff Asset Status Confirmation | 1 | 5.5  | Not Started |
+| 6  | Auditor Asset Status Validation | 1 | 5.0  | Not Started |
+| 7  | Audit Results and Reporting | 1 | 4.5  | Not Started |
 
 ---
 
@@ -75,6 +79,50 @@ As a Department Staff, I want to view assets assigned to my department so that I
 - Department Staff can filter and search assets by name or ID
 - Asset list updates in real-time when new assets are assigned
 - Department Staff cannot modify asset information or assignments
+
+### US-07 - Create Audit Inspection Cycle
+
+As an Auditor, I want to create and initiate an asset inspection cycle so that the organization can begin the asset validation process.
+
+**Acceptance Criteria:**
+
+- Auditor can create a new audit inspection cycle with title, start date, and end date
+- System validates that dates are valid and in the future
+- Audit cycle is assigned a unique identifier
+- Audit status is initially set to ONGOING
+- Department Staff are notified when audit cycle begins
+- Audit cycle details can be viewed by Auditors and Department Staff
+
+---
+
+### US-08 - Staff Asset Status Confirmation
+
+As a Department Staff member, I want to confirm the status of assets assigned to my department during an audit so that asset validation is accurate.
+
+**Acceptance Criteria:**
+
+- Department Staff can access list of assets in their department for the current audit
+- Staff can mark each asset as VALID, INVALID, or MISSING with optional notes
+- Staff can upload image proof for asset status (optional)
+- System records who confirmed each asset and when
+- Staff can review and modify their submissions before audit is finalized
+- Confirmation status is saved and cannot be modified after audit completion
+
+---
+
+### US-09 - Auditor Asset Status Validation
+
+As an Auditor, I want to review and finalize the asset status after validating staff reports so that discrepancies are identified.
+
+**Acceptance Criteria:**
+
+- Auditor can view all staff reports for an audit cycle
+- Auditor can accept or override staff-reported status
+- Auditor can add detailed notes explaining their assessment
+- Final status can be marked as VALID, INVALID, MISSING or PENDING
+- System records staff-reported vs. auditor-finalized status for comparison
+- Auditor cannot modify confirmed status once audit is closed
+- Only Auditor can finalize asset status
 
 ---
 
@@ -154,6 +202,76 @@ As a Department Staff, I want to view assets assigned to my department so that I
   
 
 ---
+
+## US-07: Create Audit Inspection Cycle
+
+  
+
+| Task ID | Task | Estimate (h) | Role | Status |
+|---------|------|--------------|------|--------|
+| US7-T1 | Create database schema for audit table | 1.0 | BE | |
+| US7-T2 | Design audit creation API endpoint | 1.0 | BE | |
+| US7-T3 | Implement audit date validation logic | 0.5 | BE | |
+| US7-T4 | Create audit creation form UI | 1.0 | FE | |
+| US7-T5 | Implement notification system for audit initiation | 1.0 | BE | |
+| US7-T6 | Write test plans for audit creation | 0.5 | Tester | |
+| US7-T7 | Manual testing and bug fixes | 0.5 | Tester | |
+
+  
+
+**Total Estimated Hours: 5.5h**
+
+  
+
+---
+
+  
+
+## US-08: Staff Asset Status Confirmation
+
+  
+
+| Task ID | Task | Estimate (h) | Role | Status |
+|---------|------|--------------|------|--------|
+| US8-T1 | Create database schema for audit details table | 1.0 | BE | |
+| US8-T2 | Design staff asset confirmation API endpoint | 1.5 | BE | |
+| US8-T4 | Create staff asset confirmation form UI | 1.5 | FE | |
+| US8-T5 | Implement status selection and notes input | 1.0 | FE | |
+| US8-T6 | Implement save functionality for staff submissions | 0.5 | BE | |
+| US8-T7 | Write test cases for status confirmation | 1.0 | QA | |
+| US8-T8 | Manual testing and bug fixes | 0.5 | QA | |
+
+**Total Estimated Hours: 8.0h**
+
+---
+
+  
+
+## US-09: Auditor Asset Status Validation
+
+  
+
+| Task ID | Task | Estimate (h) | Role | Status |
+|---------|------|--------------|------|--------|
+| US9-T1 | Design auditor asset validation API endpoint | 1.5 | BE | |
+| US9-T2 | Implement status override logic with audit trail | 1.0 | BE | |
+| US9-T3 | Implement auditor notes input and status selection UI | 1.0 | FE | |
+| US9-T4 | Build side-by-side view of staff report and auditor assessment | 1.0 | FE | |
+| US9-T5 | Implement status finalization logic | 0.5 | BE | |
+| US9-T6 | Write test plans for auditor validation | 1.0 | QA | |
+| US9-T7 | Manual testing and bug fixes | 0.5 | QA | |
+
+  
+
+**Total Estimated Hours: 8.0h**
+
+  
+
+---
+
+  
+
+**Total Estimated Hours: 8.5h**
 
   
 
